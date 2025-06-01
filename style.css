@@ -1,0 +1,118 @@
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.logo {
+  max-width: 150px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+  .logo {
+    max-width: 120px;
+  }
+
+  h1, h2 {
+    font-size: 1.4rem;
+  }
+
+  form, .busca, .resultado, #areaAdmin, #calendario {
+    padding: 1rem;
+    width: 100%;
+    margin: 0 auto 1.5rem;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .botao-secundario {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+
+  input, select {
+    font-size: 1rem;
+  }
+  @media (max-width: 600px) {
+  body {
+    padding: 1rem;
+    font-size: 0.95rem;
+  }
+
+  form, .busca, .resultado, #calendario, #areaAdmin {
+    padding: 1rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 1rem auto;
+    border-radius: 10px;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  select {
+    padding: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  button {
+    width: 100%;
+    padding: 0.7rem;
+    font-size: 1rem;
+    margin-top: 0.75rem;
+  }
+
+  .botao-secundario {
+    margin-top: 0.5rem;
+    margin-left: 0;
+  }
+
+  h1, h2 {
+    font-size: 1.4rem;
+  }
+
+  @media (max-width: 600px) {
+  body {
+    padding: 1rem;
+    font-size: 0.95rem;
+  }
+
+  form, .busca, .resultado, #calendario, #areaAdmin {
+    padding: 1rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 1rem auto;
+    border-radius: 10px;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  select {
+    padding: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  button {
+    width: 100%;
+    padding: 0.7rem;
+    font-size: 1rem;
+    margin-top: 0.75rem;
+  }
+
+  .botao-secundario {
+    margin-top: 0.5rem;
+    margin-left: 0;
+  }
+
+  h1, h2 {
+    font-size: 1.4rem;
+  }
+}
+}
+}
