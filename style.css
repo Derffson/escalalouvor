@@ -6,13 +6,8 @@
   margin-bottom: 2rem;
   text-align: center;
 }
-.fundo-desfocado {
-  position: relative;
-  background-image: url('https://raw.githubusercontent.com/Derffson/escalalouvor/refs/heads/main/fundo.jpg'); /* substitua pelo caminho da imagem */
-  background-size: cover;
-  background-position: center;
-  min-height: 100vh;
-  overflow: hidden;
+  .fundo-desfocado {
+  border: 2px solid red;
 }
 
 .fundo-desfocado::before {
