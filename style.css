@@ -7,12 +7,11 @@
   text-align: center;
 }
 .fundo-desfocado {
-  background-image: url('fundo.jpg');
+  position: relative;
+  background-image: url('sua-imagem.jpg'); /* substitua pelo caminho da imagem */
   background-size: cover;
   background-position: center;
-  position: relative;
-  height: 100vh;
-  width: 100%;
+  min-height: 100vh;
   overflow: hidden;
 }
 
@@ -20,17 +19,14 @@
   content: '';
   position: absolute;
   inset: 0;
-  backdrop-filter: blur(8px); /* DESFOCA o que está atrás */
-  background-color: rgba(0, 0, 0, 0.4); /* opcional: escurece o fundo */
+  backdrop-filter: blur(8px); /* o efeito de desfoque */
+  background-color: rgba(0, 0, 0, 0.4); /* escurece levemente para contraste */
   z-index: 1;
 }
 
 .conteudo {
   position: relative;
   z-index: 2;
-  color: white;
-  text-align: center;
-  padding: 2rem;
 }
 
 .logo {
