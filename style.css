@@ -8,7 +8,7 @@
 }
 .fundo-desfocado {
   position: relative;
-  background-image: url('https://github.com/Derffson/escalalouvor/blob/main/fundo.jpg'); /* substitua pelo caminho da imagem */
+  background-image: url('https://raw.githubusercontent.com/Derffson/escalalouvor/refs/heads/main/fundo.jpg'); /* substitua pelo caminho da imagem */
   background-size: cover;
   background-position: center;
   min-height: 100vh;
