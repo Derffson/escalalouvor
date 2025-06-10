@@ -126,11 +126,13 @@
 
 </head>
 <body>
-  <!-- Botão para modo admin -->
-  <button id="btnAdmin" onclick="ativarModoAdmin()" style="background:#28a745">Modo Admin</button>
+  <div class="fundo-desfocado">
+    <div class="conteudo">
+      <!-- Botão para modo admin -->
+      <button id="btnAdmin" onclick="ativarModoAdmin()" style="background:#28a745">Modo Admin</button>
 
-  <!-- Área do formulário (será ocultada para visitantes) -->
-  <div id="areaAdmin" style="display:none;">
+      <!-- Área do formulário (será ocultada para visitantes) -->
+      <div id="areaAdmin" style="display:none;">
     <form id="escalaForm">
       <label for="dataEscala">Data da Escala:</label>
       <input type="date" id="dataEscala" name="dataEscala" required />
@@ -163,25 +165,21 @@
     </form>
   </div>
 
-  <h1>Escala de Louvor - Igreja Vida Na Palavraaa</h1>
+ 
+     <h1>Escala de Louvor - Igreja Vida Na Palavraaa</h1>
 
-  <div class="busca">
-    <h2>Buscar Escala</h2>
-    <label for="dataBusca">Data:</label>
-    <input type="date" id="dataBusca" />
-    <button onclick="buscarEscala()">Buscar</button>
+      <div class="busca">
+        <h2>Buscar Escala</h2>
+        <label for="dataBusca">Data:</label>
+        <input type="date" id="dataBusca" />
+        <button onclick="buscarEscala()">Buscar</button>
+      </div>
+
+      <div class="resultado" id="escalaSalva"></div>
+
+      <div id="calendario"></div>
+    </div>
   </div>
-
-  <div class="resultado" id="escalaSalva"></div>
-
-  <div id="calendario"></div>
-
- <div class="fundo-desfocado">
-  <div class="conteudo">
-    <h1>Bem-vindo ao site</h1>
-    <p>Texto em cima do fundo desfocado.</p>
-  </div>
-</div>
 
   <script src="script.js"></script>
 </body>
