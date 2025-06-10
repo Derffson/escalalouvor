@@ -7,15 +7,20 @@
   text-align: center;
 }
   .fundo-desfocado {
-  border: 2px solid red;
+  background-image: url('https://raw.githubusercontent.com/Derffson/escalalouvor/main/fundo.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
 }
 
 .fundo-desfocado::before {
   content: '';
   position: absolute;
   inset: 0;
-  backdrop-filter: blur(8px); /* o efeito de desfoque */
-  background-color: rgba(0, 0, 0, 0.4); /* escurece levemente para contraste */
+  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.4); /* opcional para escurecer */
   z-index: 1;
 }
 
