@@ -7,7 +7,7 @@
   text-align: center;
 }
 .fundo-desfocado {
-  background-image: url('sua-imagem.jpg');
+  background-image: url('fundo.jpg');
   background-size: cover;
   background-position: center;
   position: relative;
