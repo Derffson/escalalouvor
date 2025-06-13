@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Teste Fundo</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Escala de Louvor</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
     html, body {
       height: 100%;
       margin: 0;
+      padding: 0;
+      font-family: sans-serif;
     }
 
     .fundo-desfocado {
       background-image: url('https://raw.githubusercontent.com/Derffson/escalalouvor/main/fundo.jpg');
       background-size: cover;
       background-position: center;
-      height: 100vh;
+      min-height: 100vh;
+      width: 100%;
       position: relative;
+      overflow: hidden;
     }
 
     .fundo-desfocado::before {
@@ -23,22 +29,72 @@
       inset: 0;
       backdrop-filter: blur(8px);
       background-color: rgba(0, 0, 0, 0.4);
+      z-index: 1;
     }
 
     .conteudo {
       position: relative;
       z-index: 2;
       color: white;
-      text-align: center;
       padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .logo {
+      max-width: 150px;
+      margin-bottom: 1rem;
+    }
+
+    form {
+      margin-top: 2rem;
+    }
+
+    input, select, button {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
   <div class="fundo-desfocado">
     <div class="conteudo">
-      <h1>Teste de fundo</h1>
+      <img src="https://raw.githubusercontent.com/Derffson/escalalouvor/main/logo.png" alt="Logo" class="logo" />
+      <h1>Escala de Louvor</h1>
+
+      <form id="escalaForm">
+        <input type="date" name="dataEscala" required />
+        <input type="text" name="vocal" placeholder="Vocal" />
+        <input type="text" name="segundaVoz" placeholder="Segunda Voz" />
+        <input type="text" name="baterista" placeholder="Bateria" />
+        <input type="text" name="guitarrista" placeholder="Guitarra" />
+        <input type="text" name="baixista" placeholder="Baixo" />
+        <input type="text" name="tecladista" placeholder="Teclado" />
+        <input type="text" name="violonista" placeholder="Violão" />
+        <input type="text" name="paleta" placeholder="Paleta de cores" />
+        <button type="submit">Salvar Escala</button>
+      </form>
+
+      <div id="escalaSalva"></div>
     </div>
   </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
