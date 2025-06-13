@@ -1,3 +1,16 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: #fdfdfd;
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  box-sizing: border-box;
+}
+
 .cabecalho {
   display: flex;
   flex-direction: column;
@@ -6,7 +19,8 @@
   margin-bottom: 2rem;
   text-align: center;
 }
-  .fundo-desfocado {
+
+.fundo-desfocado {
   background-image: url('https://raw.githubusercontent.com/Derffson/escalalouvor/main/fundo.jpg');
   background-size: cover;
   background-position: center;
@@ -20,7 +34,7 @@
   position: absolute;
   inset: 0;
   backdrop-filter: blur(8px);
-  background-color: rgba(0, 0, 0, 0.4); /* opcional para escurecer */
+  background-color: rgba(0, 0, 0, 0.4);
   z-index: 1;
 }
 
@@ -47,40 +61,8 @@
   form, .busca, .resultado, #areaAdmin, #calendario {
     padding: 1rem;
     width: 100%;
-    margin: 0 auto 1.5rem;
-  }
-
-  button {
-    width: 100%;
-  }
-
-  .botao-secundario {
-    margin-left: 0;
-    margin-top: 0.5rem;
-  }
-
-  input, select {
-    font-size: 1rem;
-  }
-  @media (max-width: 600px) {
-  body {
-    padding: 1rem;
-    font-size: 0.95rem;
-  }
-
-  form, .busca, .resultado, #calendario, #areaAdmin {
-    padding: 1rem;
-    width: 100%;
-    max-width: 100%;
     margin: 1rem auto;
     border-radius: 10px;
-  }
-
-  input[type="text"],
-  input[type="date"],
-  select {
-    padding: 0.5rem;
-    font-size: 0.95rem;
   }
 
   button {
@@ -95,24 +77,6 @@
     margin-left: 0;
   }
 
-  h1, h2 {
-    font-size: 1.4rem;
-  }
-
-  @media (max-width: 600px) {
-  body {
-    padding: 1rem;
-    font-size: 0.95rem;
-  }
-
-  form, .busca, .resultado, #calendario, #areaAdmin {
-    padding: 1rem;
-    width: 100%;
-    max-width: 100%;
-    margin: 1rem auto;
-    border-radius: 10px;
-  }
-
   input[type="text"],
   input[type="date"],
   select {
@@ -120,21 +84,8 @@
     font-size: 0.95rem;
   }
 
-  button {
-    width: 100%;
-    padding: 0.7rem;
-    font-size: 1rem;
-    margin-top: 0.75rem;
+  body {
+    padding: 1rem;
+    font-size: 0.95rem;
   }
-
-  .botao-secundario {
-    margin-top: 0.5rem;
-    margin-left: 0;
-  }
-
-  h1, h2 {
-    font-size: 1.4rem;
-  }
-}
-}
 }
