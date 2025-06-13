@@ -1,91 +1,230 @@
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
+html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Escala de Louvor</title>
 
-body {
-  color: #fdfdfd;
-  padding: 2rem;
-  font-family: 'Segoe UI', sans-serif;
-  box-sizing: border-box;
-}
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- FullCalendar CSS & JS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
-.cabecalho {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 2rem;
-  text-align: center;
-}
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
 
-.fundo-desfocado {
-  background-image: url('https://raw.githubusercontent.com/Derffson/escalalouvor/main/fundo.jpg');
-  background-size: cover;
-  background-position: center;
-  min-height: 100vh;
-  position: relative;
-  overflow: hidden;
-}
+    body {
+      color: #fdfdfd;
+      padding: 2rem;
+      font-family: 'Segoe UI', sans-serif;
+      box-sizing: border-box;
+    }
 
-.fundo-desfocado::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  backdrop-filter: blur(8px);
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 1;
-}
+    .fundo-desfocado {
+      background-image: url('https://raw.githubusercontent.com/Derffson/escalalouvor/main/fundo.jpg');
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
 
-.conteudo {
-  position: relative;
-  z-index: 2;
-}
+    .fundo-desfocado::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      backdrop-filter: blur(8px);
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
 
-.logo {
-  max-width: 150px;
-  height: auto;
-  margin-bottom: 1rem;
-}
+    .conteudo {
+      position: relative;
+      z-index: 2;
+    }
 
-@media (max-width: 600px) {
-  .logo {
-    max-width: 120px;
-  }
+    h1, h2 {
+      color: #ffffff;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
 
-  h1, h2 {
-    font-size: 1.4rem;
-  }
+    form, .busca, .resultado, #calendario, #areaAdmin {
+      background-color: #273646;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      margin-bottom: 2rem;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+    }
 
-  form, .busca, .resultado, #areaAdmin, #calendario {
-    padding: 1rem;
-    width: 100%;
-    margin: 1rem auto;
-    border-radius: 10px;
-  }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #d6dbe0;
+    }
 
-  button {
-    width: 100%;
-    padding: 0.7rem;
-    font-size: 1rem;
-    margin-top: 0.75rem;
-  }
+    input[type="text"],
+    input[type="date"],
+    select {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 5px;
+      background-color: #3a4a5c;
+      color: #fdfdfd;
+      border: 1px solid #42a5f5;
+      border-radius: 8px;
+      transition: border 0.3s;
+    }
 
-  .botao-secundario {
-    margin-top: 0.5rem;
-    margin-left: 0;
-  }
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: #64b5f6;
+    }
 
-  input[type="text"],
-  input[type="date"],
-  select {
-    padding: 0.5rem;
-    font-size: 0.95rem;
-  }
+    button {
+      background-color: #42a5f5;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 1rem;
+      font-weight: 600;
+      transition: background-color 0.3s;
+    }
 
-  body {
-    padding: 1rem;
-    font-size: 0.95rem;
-  }
-}
+    button:hover {
+      background-color: #1e88e5;
+    }
+
+    .botao-secundario {
+      background-color: #ffb74d;
+      margin-left: 10px;
+      color: #1e2a38;
+    }
+
+    .botao-secundario:hover {
+      background-color: #ffa726;
+    }
+
+    #btnAdmin {
+      display: block;
+      margin: 0 auto 2rem;
+      background-color: #66bb6a;
+      color: white;
+      font-weight: bold;
+    }
+
+    #btnAdmin:hover {
+      background-color: #43a047;
+    }
+
+    p, span, li {
+      color: #d6dbe0;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 600px) {
+      h1, h2 {
+        font-size: 1.4rem;
+      }
+
+      form, .busca, .resultado, #areaAdmin, #calendario {
+        padding: 1rem;
+        width: 100%;
+        margin: 1rem auto;
+        border-radius: 10px;
+      }
+
+      button {
+        width: 100%;
+        padding: 0.7rem;
+        font-size: 1rem;
+        margin-top: 0.75rem;
+      }
+
+      .botao-secundario {
+        margin-top: 0.5rem;
+        margin-left: 0;
+      }
+
+      input[type="text"],
+      input[type="date"],
+      select {
+        padding: 0.5rem;
+        font-size: 0.95rem;
+      }
+
+      body {
+        padding: 1rem;
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="fundo-desfocado">
+    <div class="conteudo">
+      <button id="btnAdmin" onclick="ativarModoAdmin()">Modo Admin</button>
+
+      <div id="areaAdmin" style="display:none;">
+        <form id="escalaForm">
+          <label for="dataEscala">Data da Escala:</label>
+          <input type="date" id="dataEscala" name="dataEscala" required />
+
+          <label for="vocal">Vocal:</label>
+          <input type="text" id="vocal" name="vocal" />
+
+          <label for="segundaVoz">Segunda Voz:</label>
+          <input type="text" id="segundaVoz" name="segundaVoz" />
+
+          <label for="baterista">Baterista:</label>
+          <input type="text" id="baterista" name="baterista" />
+
+          <label for="guitarrista">Guitarrista:</label>
+          <input type="text" id="guitarrista" name="guitarrista" />
+
+          <label for="baixista">Baixista:</label>
+          <input type="text" id="baixista" name="baixista" />
+
+          <label for="tecladista">Tecladista:</label>
+          <input type="text" id="tecladista" name="tecladista" />
+
+          <label for="violonista">Violonista:</label>
+          <input type="text" id="violonista" name="violonista" />
+
+          <label for="paleta">Paleta de Cores:</label>
+          <input type="text" id="paleta" name="paleta" />
+
+          <button type="submit">Salvar Escala</button>
+        </form>
+      </div>
+
+      <h1>Escala de Louvor - Igreja Vida Na Palavra</h1>
+
+      <div class="busca">
+        <h2>Buscar Escala</h2>
+        <label for="dataBusca">Data:</label>
+        <input type="date" id="dataBusca" />
+        <button onclick="buscarEscala()">Buscar</button>
+      </div>
+
+      <div class="resultado" id="escalaSalva"></div>
+
+      <div id="calendario"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
