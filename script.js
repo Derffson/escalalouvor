@@ -226,8 +226,9 @@ async function gerarEventos() {
   .map(a => ({
     title: "📢 Aviso",
     start: a.data,
-    backgroundColor: "#FFA500",  // laranja puro
-    borderColor: "#FF8C00",      // laranja escuro
+    backgroundColor: "#FFA500",
+    borderColor: "#FF8C00",
+    classNames: ["evento-aviso"] // adiciona a classe para estilizar no CSS
   }));
 
   return [...eventosEscalas, ...eventosAvisos];
