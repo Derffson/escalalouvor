@@ -1,42 +1,27 @@
 @media (max-width: 600px) {
-  /* Busca */
   .busca {
-    width: 100% !important;
-    max-width: none !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
     text-align: center !important;
-  }
-  .busca label {
-    display: block;
-    margin-bottom: 0.5rem;
-    text-align: center;
   }
   .busca input[type="date"],
   .busca button {
-    display: block !important;
     width: 90% !important;
     max-width: 300px;
-    margin: 0.25rem auto !important;
-  }
-
-  /* Aviso */
-  #avisoArea {
-    width: 100% !important;
-    max-width: none !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-
-    /* Remove flex para evitar deslocamento */
+    margin: 0.5rem auto !important;
     display: block !important;
-    text-align: center !important;
   }
 
+  #avisoArea {
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+    display: block !important;
+  }
   #avisoArea::before {
     display: inline-block !important;
-    margin: 0 0.5rem 0 0 !important;
+    margin-right: 0.5rem !important;
   }
-
   #avisoDisplayTexto {
     margin: 0 auto !important;
     text-align: center !important;
