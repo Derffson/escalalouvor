@@ -1,5 +1,5 @@
-const API_URL_ESCALAS = "https://sheetdb.io/api/v1/w34uix9m94kl8";
-const API_URL_AVISOS = "https://sheetdb.io/api/v1/w34uix9m94kl8/search_or";
+const API_URL = "https://sheetdb.io/api/v1/w34uix9m94kl8";
+const API_URL_AVISOS = "https://sheetdb.io/api/v1/w34uix9m94kl8/tabela/avisos";
 
 function getUserId() {
   let userId = localStorage.getItem("userId");
@@ -32,11 +32,11 @@ document.getElementById("escalaForm").addEventListener("submit", async function 
   }
 
   try {
-    await fetch(`${API_URL_ESCALAS}/data/data/${encodeURIComponent(novaEscala.data)}`, {
+    await fetch(`${API_URL}/data/data/${encodeURIComponent(novaEscala.data)}`, {
       method: "DELETE",
     });
 
-    await fetch(API_URL_ESCALAS, {
+    await fetch(API_URL, {
       method: "POST",
       body: JSON.stringify({ data: [novaEscala] }),
       headers: { "Content-Type": "application/json" },
@@ -51,43 +51,47 @@ document.getElementById("escalaForm").addEventListener("submit", async function 
   }
 });
 
-document.getElementById("avisoForm")?.addEventListener("submit", async function (e) {
+document.getElementById("formAviso").addEventListener("submit", async function (e) {
   e.preventDefault();
   const avisoTexto = document.getElementById("avisoTexto").value.trim();
 
-  if (!avisoTexto) return alert("Digite um aviso.");
+  if (!avisoTexto) {
+    alert("Digite um aviso.");
+    return;
+  }
 
   try {
-    await fetch(API_URL_ESCALAS + "/delete", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: [{ aviso: "" }] })
-    });
-
-    await fetch(API_URL_ESCALAS, {
+    await fetch(API_URL_AVISOS, {
       method: "POST",
       body: JSON.stringify({ data: [{ aviso: avisoTexto }] }),
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     });
 
-    alert("Aviso salvo com sucesso!");
+    alert("Aviso salvo!");
     document.getElementById("avisoTexto").value = "";
     carregarAviso();
   } catch (error) {
-    console.error("Erro ao salvar aviso:", error);
     alert("Erro ao salvar aviso.");
+    console.error(error);
   }
 });
 
 async function carregarAviso() {
-  const avisoEl = document.getElementById("avisoTextoSite");
   try {
-    const res = await fetch(`${API_URL_AVISOS}?sort_by=ROWID&sort_order=desc&limit=1`);
-    const data = await res.json();
-    avisoEl.innerText = data.length ? data[0].aviso : "Nenhum aviso disponível.";
+    const res = await fetch(API_URL_AVISOS);
+    const avisos = await res.json();
+    if (avisos.length > 0) {
+      const ultimo = avisos[avisos.length - 1];
+      document.getElementById("avisoDisplay").innerHTML = `
+        <h2>Aviso</h2>
+        <p>${ultimo.aviso}</p>
+      `;
+    } else {
+      document.getElementById("avisoDisplay").innerHTML = "";
+    }
   } catch (error) {
     console.error("Erro ao carregar aviso:", error);
-    avisoEl.innerText = "Erro ao carregar aviso.";
+    document.getElementById("avisoDisplay").innerHTML = "<p>Erro ao carregar aviso.</p>";
   }
 }
 
@@ -104,7 +108,7 @@ async function mostrarEscala(data) {
   const container = document.getElementById("escalaSalva");
 
   try {
-    const res = await fetch(`${API_URL_ESCALAS}/search?data=${encodeURIComponent(data)}`);
+    const res = await fetch(`${API_URL}/search?data=${encodeURIComponent(data)}`);
     const escalas = await res.json();
     const dados = escalas[0];
 
@@ -138,7 +142,7 @@ async function mostrarEscala(data) {
 }
 
 async function editarEscala(data) {
-  const res = await fetch(`${API_URL_ESCALAS}/search?data=${encodeURIComponent(data)}`);
+  const res = await fetch(`${API_URL}/search?data=${encodeURIComponent(data)}`);
   const dados = (await res.json())[0];
   if (!dados) return alert("Escala não encontrada.");
 
@@ -160,7 +164,7 @@ async function excluirEscala(data) {
   if (!confirm(`Tem certeza que deseja excluir a escala do dia ${data}?`)) return;
 
   try {
-    const res = await fetch(`${API_URL_ESCALAS}/data/data/${encodeURIComponent(data)}`, {
+    const res = await fetch(`${API_URL}/data/data/${encodeURIComponent(data)}`, {
       method: "DELETE",
     });
 
@@ -198,7 +202,7 @@ async function iniciarCalendario() {
 }
 
 async function gerarEventos() {
-  const res = await fetch(API_URL_ESCALAS);
+  const res = await fetch(API_URL);
   const dados = await res.json();
   return dados.map((escala) => ({
     title: "Escala",
