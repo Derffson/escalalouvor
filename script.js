@@ -1,4 +1,5 @@
 const API_URL = "https://sheetdb.io/api/v1/w34uix9m94kl8";
+const API_AVISOS = "https://sheetdb.io/api/v1/w34uix9m94kl8?sheet=avisos";
 
 document.getElementById("escalaForm").addEventListener("submit", async function (e) {
   e.preventDefault();
