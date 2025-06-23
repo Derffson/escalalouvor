@@ -1,229 +1,169 @@
-const API_URL = "https://sheetdb.io/api/v1/w34uix9m94kl8";
-const AVISO_API = "https://sheetdb.io/api/v1/w34uix9m94kl8?sheet=avisos";
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Escala de Louvor</title>
 
-function getUserId() {
-  let userId = localStorage.getItem("userId");
-  if (!userId) {
-    userId = "user-" + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem("userId", userId);
-  }
-  return userId;
-}
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
-document.getElementById("escalaForm").addEventListener("submit", async function (e) {
-  e.preventDefault();
-  const form = e.target;
-
-  const novaEscala = {
-    data: form.dataEscala.value,
-    vocal: form.vocal.value.trim(),
-    segundaVoz: form.segundaVoz.value.trim(),
-    baterista: form.baterista.value.trim(),
-    guitarrista: form.guitarrista.value.trim(),
-    baixista: form.baixista.value.trim(),
-    tecladista: form.tecladista.value.trim(),
-    violonista: form.violonista.value.trim(),
-    paleta: form.paleta.value.trim()
-  };
-
-  if (!novaEscala.data) {
-    alert("Informe a data da escala.");
-    return;
-  }
-
-  try {
-    await fetch(`${API_URL}/data/data/${encodeURIComponent(novaEscala.data)}`, {
-      method: "DELETE",
-    });
-
-    await fetch(API_URL, {
-      method: "POST",
-      body: JSON.stringify({ data: [novaEscala] }),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    alert("Escala salva com sucesso!");
-    form.reset();
-    atualizarCalendario();
-  } catch (error) {
-    alert("Erro ao salvar escala.");
-    console.error(error);
-  }
-});
-
-async function buscarEscala() {
-  const data = document.getElementById("dataBusca").value;
-  if (!data) {
-    alert("Selecione uma data para buscar.");
-    return;
-  }
-  mostrarEscala(data);
-}
-
-async function mostrarEscala(data) {
-  const container = document.getElementById("escalaSalva");
-
-  try {
-    const res = await fetch(`${API_URL}/search?data=${encodeURIComponent(data)}`);
-    const escalas = await res.json();
-    const dados = escalas[0];
-
-    if (!dados) {
-      container.innerHTML = `<p><strong>Nenhuma escala cadastrada para ${data}.</strong></p>`;
-      return;
+  <style>
+    html, body {
+      height: 100%; margin: 0; padding: 0;
+      font-family: 'Inter', sans-serif;
     }
 
-    const isAdmin = document.getElementById("areaAdmin").style.display === "block";
-
-    container.innerHTML = `
-      <h2>Escala da Semana (${data})</h2>
-      <p><strong>Vocal:</strong> ${dados.vocal || ''}</p>
-      <p><strong>Segunda Voz:</strong> ${dados.segundaVoz || ''}</p>
-      <p><strong>Baterista:</strong> ${dados.baterista || ''}</p>
-      <p><strong>Guitarrista:</strong> ${dados.guitarrista || ''}</p>
-      <p><strong>Baixista:</strong> ${dados.baixista || ''}</p>
-      <p><strong>Tecladista:</strong> ${dados.tecladista || ''}</p>
-      <p><strong>Violonista:</strong> ${dados.violonista || ''}</p>
-      <p><strong>Paleta de Cores:</strong> ${dados.paleta || ''}</p>
-
-      ${isAdmin ? `
-        <button onclick="editarEscala('${data}')">Editar</button>
-        <button class="botao-secundario" onclick="excluirEscala('${data}')">Excluir</button>
-      ` : ''}
-    `;
-  } catch (error) {
-    console.error("Erro ao buscar escala:", error);
-    container.innerHTML = "<p>Erro ao carregar escala.</p>";
-  }
-}
-
-async function editarEscala(data) {
-  const res = await fetch(`${API_URL}/search?data=${encodeURIComponent(data)}`);
-  const dados = (await res.json())[0];
-  if (!dados) return alert("Escala não encontrada.");
-
-  const form = document.getElementById("escalaForm");
-  form.dataEscala.value = data;
-  form.vocal.value = dados.vocal || '';
-  form.segundaVoz.value = dados.segundaVoz || '';
-  form.baterista.value = dados.baterista || '';
-  form.guitarrista.value = dados.guitarrista || '';
-  form.baixista.value = dados.baixista || '';
-  form.tecladista.value = dados.tecladista || '';
-  form.violonista.value = dados.violonista || '';
-  form.paleta.value = dados.paleta || '';
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-async function excluirEscala(data) {
-  if (!confirm(`Tem certeza que deseja excluir a escala do dia ${data}?`)) return;
-
-  try {
-    const res = await fetch(`${API_URL}/data/data/${encodeURIComponent(data)}`, {
-      method: "DELETE",
-    });
-
-    if (!res.ok) throw new Error("Falha ao excluir escala");
-
-    document.getElementById("escalaSalva").innerHTML = "";
-    atualizarCalendario();
-    alert("Escala excluída com sucesso!");
-  } catch (error) {
-    console.error(error);
-    alert("Erro ao excluir a escala.");
-  }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  iniciarCalendario();
-  carregarAviso();
-});
-
-let calendar;
-
-async function iniciarCalendario() {
-  const calendarEl = document.getElementById("calendario");
-  calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: "dayGridMonth",
-    locale: "pt-br",
-    events: await gerarEventos(),
-    eventClick: function (info) {
-      const data = info.event.startStr;
-      mostrarEscala(data);
-      document.getElementById("dataBusca").value = data;
-    },
-  });
-  calendar.render();
-}
-
-async function gerarEventos() {
-  const res = await fetch(API_URL);
-  const dados = await res.json();
-  return dados.map((escala) => ({
-    title: "Escala",
-    start: escala.data,
-    backgroundColor: "#3a87ad",
-    borderColor: "#3a87ad",
-  }));
-}
-
-function atualizarCalendario() {
-  if (!calendar) return;
-  calendar.removeAllEvents();
-  gerarEventos().then((eventos) => {
-    calendar.addEventSource(eventos);
-    calendar.refetchEvents();
-  });
-}
-
-function ativarModoAdmin() {
-  const senha = prompt("Digite a senha de administrador:");
-  if (senha === "louvor2024") {
-    document.getElementById("areaAdmin").style.display = "block";
-    document.getElementById("btnAdmin").style.display = "none";
-    atualizarCalendario();
-  } else {
-    alert("Senha incorreta.");
-  }
-}
-
-// AVISO - salvar e buscar aviso da aba "avisos"
-document.getElementById("formAviso").addEventListener("submit", async function (e) {
-  e.preventDefault();
-  const novoAviso = document.getElementById("campoAviso").value.trim();
-
-  if (!novoAviso) return alert("Escreva o aviso antes de salvar.");
-
-  try {
-    await fetch(AVISO_API, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: [{ aviso: novoAviso }] })
-    });
-
-    document.getElementById("campoAviso").value = "";
-    alert("Aviso publicado com sucesso!");
-    carregarAviso();
-  } catch (error) {
-    alert("Erro ao publicar aviso.");
-    console.error(error);
-  }
-});
-
-async function carregarAviso() {
-  const avisoEl = document.getElementById("avisoTexto");
-  try {
-    const res = await fetch(AVISO_API);
-    const dados = await res.json();
-    if (dados.length > 0) {
-      const avisoMaisRecente = dados[dados.length - 1].aviso;
-      avisoEl.textContent = avisoMaisRecente;
-    } else {
-      avisoEl.textContent = "Nenhum aviso publicado.";
+    .fundo-desfocado {
+      background-image: url('https://raw.githubusercontent.com/Derffson/escalalouvor/main/fundo.jpg');
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
     }
-  } catch (error) {
-    avisoEl.textContent = "Erro ao carregar aviso.";
-    console.error("Erro ao buscar aviso:", error);
-  }
-}
+
+    .fundo-desfocado::before {
+      content: ''; position: absolute; inset: 0;
+      backdrop-filter: blur(8px);
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+
+    .conteudo {
+      position: relative; z-index: 2;
+      padding: 2rem; max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h1, h2 { color: #ffffff; text-align: center; }
+
+    form, .busca, .resultado, #calendario, #areaAdmin, #avisoArea {
+      background-color: #273646;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      margin-bottom: 2rem;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #d6dbe0;
+    }
+
+    input[type="text"], input[type="date"], select {
+      width: 100%; padding: 0.6rem;
+      background-color: #3a4a5c;
+      color: #fdfdfd;
+      border: 1px solid #42a5f5;
+      border-radius: 8px;
+    }
+
+    button {
+      background-color: #42a5f5;
+      color: white; border: none;
+      padding: 0.75rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer; font-weight: 600;
+    }
+
+    button:hover { background-color: #1e88e5; }
+
+    .botao-secundario {
+      background-color: #ffb74d; margin-left: 10px; color: #1e2a38;
+    }
+
+    .botao-secundario:hover { background-color: #ffa726; }
+
+    #btnAdmin {
+      display: block; margin: 0 auto 2rem;
+      background-color: #66bb6a;
+    }
+
+    #btnAdmin:hover { background-color: #43a047; }
+
+    #calendario * {
+      color: white !important;
+    }
+
+    @media (max-width: 600px) {
+      form, .busca, .resultado, #areaAdmin, #calendario, #avisoArea {
+        padding: 1rem; width: 100%; margin: 1rem auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="fundo-desfocado">
+    <div class="conteudo">
+      <button id="btnAdmin" onclick="ativarModoAdmin()">Modo Admin</button>
+
+      <div id="areaAdmin" style="display:none;">
+        <form id="escalaForm">
+          <label for="dataEscala">Data da Escala:</label>
+          <input type="date" id="dataEscala" name="dataEscala" required />
+
+          <label for="vocal">Vocal:</label>
+          <input type="text" id="vocal" name="vocal" />
+
+          <label for="segundaVoz">Segunda Voz:</label>
+          <input type="text" id="segundaVoz" name="segundaVoz" />
+
+          <label for="baterista">Baterista:</label>
+          <input type="text" id="baterista" name="baterista" />
+
+          <label for="guitarrista">Guitarrista:</label>
+          <input type="text" id="guitarrista" name="guitarrista" />
+
+          <label for="baixista">Baixista:</label>
+          <input type="text" id="baixista" name="baixista" />
+
+          <label for="tecladista">Tecladista:</label>
+          <input type="text" id="tecladista" name="tecladista" />
+
+          <label for="violonista">Violonista:</label>
+          <input type="text" id="violonista" name="violonista" />
+
+          <label for="paleta">Paleta de Cores:</label>
+          <input type="text" id="paleta" name="paleta" />
+
+          <button type="submit">Salvar Escala</button>
+        </form>
+
+        <form id="formAviso">
+          <label for="campoAviso">Novo Aviso:</label>
+          <input type="text" id="campoAviso" name="aviso" placeholder="Digite o aviso aqui..." />
+          <button type="submit">Salvar Aviso</button>
+        </form>
+      </div>
+
+      <h1>Escala de Louvor - Igreja Vida Na Palavra</h1>
+
+      <div class="busca">
+        <h2>Buscar Escala</h2>
+        <label for="dataBusca">Data:</label>
+        <input type="date" id="dataBusca" />
+        <button onclick="buscarEscala()">Buscar</button>
+      </div>
+
+      <div class="resultado" id="escalaSalva"></div>
+
+      <div class="resultado" id="avisoArea">
+        <h2>Aviso</h2>
+        <p id="avisoTexto">Carregando aviso...</p>
+      </div>
+
+      <div id="calendario"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
