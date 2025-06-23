@@ -116,6 +116,34 @@ p, span, li {
     font-size: 1rem;
     margin-top: 0.75rem;
   }
+  #avisoArea {
+  background-color: #32475b;
+  border-left: 5px solid #ffb74d;
+  position: relative;
+  padding: 1.5rem 2rem;
+}
+
+#avisoArea::before {
+  content: "⚠️";
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font-size: 1.5rem;
+}
+
+#avisoArea h2 {
+  margin-left: 30px;
+  font-size: 1.4rem;
+  color: #ffdd8d;
+  font-weight: bold;
+}
+
+#avisoDisplayTexto {
+  margin-left: 30px;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-style: italic;
+}
 
   .botao-secundario {
     margin-top: 0.5rem;
