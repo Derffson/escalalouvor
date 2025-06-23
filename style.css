@@ -117,32 +117,35 @@ p, span, li {
     margin-top: 0.75rem;
   }
   #avisoArea {
-  background-color: #32475b;
-  border-left: 5px solid #ffb74d;
-  position: relative;
+  background-color: #2c3e50;
+  border-left: 6px solid #f39c12;
+  border-radius: 12px;
   padding: 1.5rem 2rem;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
 }
 
 #avisoArea::before {
-  content: "⚠️";
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  font-size: 1.5rem;
+  content: "🔔";
+  font-size: 2rem;
+  color: #f1c40f;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
 }
 
 #avisoArea h2 {
-  margin-left: 30px;
-  font-size: 1.4rem;
-  color: #ffdd8d;
-  font-weight: bold;
+  display: none; /* esconde título duplicado */
 }
 
 #avisoDisplayTexto {
-  margin-left: 30px;
-  color: #ffffff;
+  color: #fefefe;
   font-size: 1.1rem;
   font-style: italic;
+  line-height: 1.6;
 }
   
 
