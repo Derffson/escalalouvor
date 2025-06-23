@@ -36,6 +36,20 @@ label {
   color: #d6dbe0;
 }
 
+#escalaSalva p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+  font-size: 1rem;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+#escalaSalva p strong {
+  min-width: 130px;
+}
+
 input[type="text"],
 input[type="date"],
 select {
