@@ -147,26 +147,30 @@ p, span, li {
 
 /* Responsivo */
 @media (max-width: 600px) {
+  .conteudo {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
   form, .busca, .resultado, #areaAdmin, #calendario, #avisoArea {
-    width: 90%;          /* Ocupa 90% da largura da tela */
-    max-width: 650px;    /* Mantém limite máximo */
+    width: 100%;
+    max-width: none;
     margin-left: auto;
     margin-right: auto;
-    padding: 1rem;
+    padding: 1rem 1rem;
     border-radius: 10px;
   }
 
   .busca, #avisoArea {
-    text-align: center;  /* Centraliza textos dentro */
+    text-align: center;
   }
 
   input[type="text"],
   input[type="date"],
   select {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
+    margin: 0 auto 0.75rem auto;
+    width: 95%;
   }
 
   button {
@@ -175,20 +179,12 @@ p, span, li {
     font-size: 1rem;
     margin-top: 0.75rem;
   }
-}
 
   .botao-secundario {
     margin-top: 0.5rem;
     margin-left: 0;
   }
-
-  input[type="text"],
-  input[type="date"],
-  select {
-    padding: 0.5rem;
-    font-size: 0.95rem;
-  }
-
+  
   body {
     padding: 1rem;
     font-size: 0.95rem;
