@@ -1,4 +1,4 @@
-const API_URL = "https://sheetdb.io/api/v1/z4y279pifi9l3";
+const API_URL = "https://sheetdb.io/api/v1/w34uix9m94kl8";
 
 function getUserId() {
   let userId = localStorage.getItem("userId");
