@@ -4,15 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Escala de Louvor</title>
-
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
-  <!-- FullCalendar CSS & JS -->
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
-
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
   <div class="conteudo">
@@ -22,31 +17,22 @@
       <form id="escalaForm">
         <label for="dataEscala">Data da Escala:</label>
         <input type="date" id="dataEscala" name="dataEscala" required />
-
         <label for="vocal">Vocal:</label>
         <input type="text" id="vocal" name="vocal" />
-
         <label for="segundaVoz">Segunda Voz:</label>
         <input type="text" id="segundaVoz" name="segundaVoz" />
-
         <label for="baterista">Baterista:</label>
         <input type="text" id="baterista" name="baterista" />
-
         <label for="guitarrista">Guitarrista:</label>
         <input type="text" id="guitarrista" name="guitarrista" />
-
         <label for="baixista">Baixista:</label>
         <input type="text" id="baixista" name="baixista" />
-
         <label for="tecladista">Tecladista:</label>
         <input type="text" id="tecladista" name="tecladista" />
-
         <label for="violonista">Violonista:</label>
         <input type="text" id="violonista" name="violonista" />
-
         <label for="paleta">Paleta de Cores:</label>
         <input type="text" id="paleta" name="paleta" />
-
         <button type="submit">Salvar Escala</button>
       </form>
     </div>
@@ -61,10 +47,149 @@
     </div>
 
     <div class="resultado" id="escalaSalva"></div>
-
     <div id="calendario"></div>
   </div>
 
-  <script src="script.js?v=2"></script>
+  <script>
+    const API_URL = "https://sheetdb.io/api/v1/w34uix9m94kl8";
+    let calendar;
+
+    document.getElementById("escalaForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const novaEscala = {
+        data: form.dataEscala.value,
+        vocal: form.vocal.value.trim(),
+        segundaVoz: form.segundaVoz.value.trim(),
+        baterista: form.baterista.value.trim(),
+        guitarrista: form.guitarrista.value.trim(),
+        baixista: form.baixista.value.trim(),
+        tecladista: form.tecladista.value.trim(),
+        violonista: form.violonista.value.trim(),
+        paleta: form.paleta.value.trim()
+      };
+
+      if (!novaEscala.data) {
+        alert("Informe a data da escala.");
+        return;
+      }
+
+      try {
+        await fetch(`${API_URL}/data/data/${encodeURIComponent(novaEscala.data)}`, {
+          method: "DELETE",
+        });
+
+        await fetch(API_URL, {
+          method: "POST",
+          body: JSON.stringify({ data: [novaEscala] }),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        alert("Escala salva com sucesso!");
+        form.reset();
+        atualizarCalendario();
+      } catch (error) {
+        alert("Erro ao salvar escala.");
+        console.error(error);
+      }
+    });
+
+    async function buscarEscala() {
+      const data = document.getElementById("dataBusca").value;
+      if (!data) {
+        alert("Selecione uma data para buscar.");
+        return;
+      }
+      mostrarEscala(data);
+    }
+
+    async function mostrarEscala(data) {
+      const container = document.getElementById("escalaSalva");
+      try {
+        const res = await fetch(`${API_URL}/search?data=${encodeURIComponent(data)}`);
+        const dados = (await res.json())[0];
+
+        if (!dados) {
+          container.innerHTML = `<p><strong>Nenhuma escala cadastrada para ${data}.</strong></p>`;
+          return;
+        }
+
+        const isAdmin = document.getElementById("areaAdmin").style.display === "block";
+        container.innerHTML = `
+          <h2>Escala da Semana (${data})</h2>
+          <p><strong>Vocal:</strong> ${dados.vocal || ''}</p>
+          <p><strong>Segunda Voz:</strong> ${dados.segundaVoz || ''}</p>
+          <p><strong>Baterista:</strong> ${dados.baterista || ''}</p>
+          <p><strong>Guitarrista:</strong> ${dados.guitarrista || ''}</p>
+          <p><strong>Baixista:</strong> ${dados.baixista || ''}</p>
+          <p><strong>Tecladista:</strong> ${dados.tecladista || ''}</p>
+          <p><strong>Violonista:</strong> ${dados.violonista || ''}</p>
+          <p><strong>Paleta de Cores:</strong> ${dados.paleta || ''}</p>
+          ${isAdmin ? `<button onclick="editarEscala('${data}')">Editar</button><button class="botao-secundario" onclick="excluirEscala('${data}')">Excluir</button>` : ''}
+        `;
+      } catch (error) {
+        console.error("Erro ao buscar escala:", error);
+        container.innerHTML = "<p>Erro ao carregar escala.</p>";
+      }
+    }
+
+    async function excluirEscala(data) {
+      if (!confirm(`Deseja excluir a escala de ${data}?`)) return;
+      try {
+        await fetch(`${API_URL}/data/data/${encodeURIComponent(data)}`, {
+          method: "DELETE",
+        });
+        document.getElementById("escalaSalva").innerHTML = "";
+        atualizarCalendario();
+      } catch (err) {
+        alert("Erro ao excluir escala.");
+      }
+    }
+
+    function ativarModoAdmin() {
+      const senha = prompt("Digite a senha de administrador:");
+      if (senha === "louvor2024") {
+        document.getElementById("areaAdmin").style.display = "block";
+        document.getElementById("btnAdmin").style.display = "none";
+      } else {
+        alert("Senha incorreta.");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const calendarEl = document.getElementById("calendario");
+      calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: "dayGridMonth",
+        locale: "pt-br",
+        events: await gerarEventos(),
+        eventClick: function (info) {
+          const data = info.event.startStr;
+          mostrarEscala(data);
+          document.getElementById("dataBusca").value = data;
+        }
+      });
+      calendar.render();
+    });
+
+    async function gerarEventos() {
+      const res = await fetch(API_URL);
+      const dados = await res.json();
+      return dados.map(escala => ({
+        title: "Escala",
+        start: escala.data,
+        backgroundColor: "#3a87ad",
+        borderColor: "#3a87ad",
+      }));
+    }
+
+    function atualizarCalendario() {
+      if (!calendar) return;
+      calendar.removeAllEvents();
+      gerarEventos().then(eventos => {
+        calendar.addEventSource(eventos);
+        calendar.refetchEvents();
+      });
+    }
+  </script>
 </body>
 </html>
