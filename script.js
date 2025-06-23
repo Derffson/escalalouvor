@@ -222,13 +222,13 @@ async function gerarEventos() {
     }));
 
   const eventosAvisos = avisos
-    .filter(a => a.data)
-    .map(a => ({
-      title: "📢 Aviso",
-      start: a.data,
-      backgroundColor: "#ffb74d",
-      borderColor: "#ff9800",
-    }));
+  .filter(a => a.data)
+  .map(a => ({
+    title: "📢 Aviso",
+    start: a.data,
+    backgroundColor: "#FFA500",  // laranja puro
+    borderColor: "#FF8C00",      // laranja escuro
+  }));
 
   return [...eventosEscalas, ...eventosAvisos];
 }
