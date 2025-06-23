@@ -157,6 +157,18 @@ p, span, li {
     padding: 0.5rem;
     font-size: 0.95rem;
   }
+  .fc-event {
+  color: white !important;
+  font-weight: 600;
+}
+
+/* Estilo específico para eventos de aviso (classe evento-aviso) */
+.fc-event.evento-aviso {
+  background-color: #FFA500 !important; /* laranja puro */
+  border-color: #FF8C00 !important; /* laranja escuro */
+  color: #1e2a38 !important; /* texto escuro para contraste */
+  font-weight: bold;
+}
 
   body {
     padding: 1rem;
