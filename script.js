@@ -1,14 +1,4 @@
 const API_URL = "https://sheetdb.io/api/v1/w34uix9m94kl8";
-const API_URL_AVISOS = "https://sheetdb.io/api/v1/w34uix9m94kl8/tabela/avisos";
-
-function getUserId() {
-  let userId = localStorage.getItem("userId");
-  if (!userId) {
-    userId = "user-" + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem("userId", userId);
-  }
-  return userId;
-}
 
 document.getElementById("escalaForm").addEventListener("submit", async function (e) {
   e.preventDefault();
@@ -23,7 +13,7 @@ document.getElementById("escalaForm").addEventListener("submit", async function 
     baixista: form.baixista.value.trim(),
     tecladista: form.tecladista.value.trim(),
     violonista: form.violonista.value.trim(),
-    paleta: form.paleta.value.trim()
+    paleta: form.paleta.value.trim(),
   };
 
   if (!novaEscala.data) {
@@ -53,22 +43,37 @@ document.getElementById("escalaForm").addEventListener("submit", async function 
 
 document.getElementById("formAviso").addEventListener("submit", async function (e) {
   e.preventDefault();
-  const avisoTexto = document.getElementById("avisoTexto").value.trim();
+  const form = e.target;
+  const avisoTexto = form.aviso.value.trim();
 
   if (!avisoTexto) {
-    alert("Digite um aviso.");
+    alert("Digite um aviso antes de salvar.");
     return;
   }
 
   try {
-    await fetch(API_URL_AVISOS, {
+    // Apaga todos os avisos antigos (caso queira manter apenas o último)
+    const resAvisos = await fetch(API_URL);
+    const avisos = await resAvisos.json();
+
+    // Deleta todos os avisos que existirem (apenas da aba "avisos")
+    for (const aviso of avisos) {
+      if (aviso.aviso) {
+        await fetch(`${API_URL}/data/aviso/${encodeURIComponent(aviso.aviso)}`, {
+          method: "DELETE",
+        });
+      }
+    }
+
+    // Adiciona o novo aviso
+    await fetch(API_URL, {
       method: "POST",
       body: JSON.stringify({ data: [{ aviso: avisoTexto }] }),
       headers: { "Content-Type": "application/json" },
     });
 
-    alert("Aviso salvo!");
-    document.getElementById("avisoTexto").value = "";
+    alert("Aviso salvo com sucesso!");
+    form.reset();
     carregarAviso();
   } catch (error) {
     alert("Erro ao salvar aviso.");
@@ -78,20 +83,19 @@ document.getElementById("formAviso").addEventListener("submit", async function (
 
 async function carregarAviso() {
   try {
-    const res = await fetch(API_URL_AVISOS);
-    const avisos = await res.json();
-    if (avisos.length > 0) {
-      const ultimo = avisos[avisos.length - 1];
-      document.getElementById("avisoDisplay").innerHTML = `
-        <h2>Aviso</h2>
-        <p>${ultimo.aviso}</p>
-      `;
-    } else {
-      document.getElementById("avisoDisplay").innerHTML = "";
+    const res = await fetch(API_URL);
+    const dados = await res.json();
+    const avisos = dados.filter(d => d.aviso);
+    if (avisos.length === 0) {
+      document.getElementById("avisoDisplayTexto").textContent = "Nenhum aviso cadastrado.";
+      return;
     }
+    // Pega o último aviso cadastrado
+    const ultimo = avisos[avisos.length - 1];
+    document.getElementById("avisoDisplayTexto").textContent = ultimo.aviso;
   } catch (error) {
     console.error("Erro ao carregar aviso:", error);
-    document.getElementById("avisoDisplay").innerHTML = "<p>Erro ao carregar aviso.</p>";
+    document.getElementById("avisoDisplayTexto").textContent = "Erro ao carregar aviso.";
   }
 }
 
@@ -179,12 +183,12 @@ async function excluirEscala(data) {
   }
 }
 
+let calendar;
+
 document.addEventListener("DOMContentLoaded", () => {
   iniciarCalendario();
   carregarAviso();
 });
-
-let calendar;
 
 async function iniciarCalendario() {
   const calendarEl = document.getElementById("calendario");
@@ -204,12 +208,14 @@ async function iniciarCalendario() {
 async function gerarEventos() {
   const res = await fetch(API_URL);
   const dados = await res.json();
-  return dados.map((escala) => ({
-    title: "Escala",
-    start: escala.data,
-    backgroundColor: "#3a87ad",
-    borderColor: "#3a87ad",
-  }));
+  return dados
+    .filter(e => e.data)  // somente registros que tenham data (escala)
+    .map((escala) => ({
+      title: "Escala",
+      start: escala.data,
+      backgroundColor: "#3a87ad",
+      borderColor: "#3a87ad",
+    }));
 }
 
 function atualizarCalendario() {
