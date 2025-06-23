@@ -23,10 +23,12 @@ document.getElementById("escalaForm").addEventListener("submit", async function 
   }
 
   try {
+    // Apaga escala da data antes para não duplicar
     await fetch(`${API_URL}/data/data/${encodeURIComponent(novaEscala.data)}`, {
       method: "DELETE",
     });
 
+    // Salva nova escala
     await fetch(API_URL, {
       method: "POST",
       body: JSON.stringify({ data: [novaEscala] }),
@@ -44,33 +46,36 @@ document.getElementById("escalaForm").addEventListener("submit", async function 
 
 document.getElementById("formAviso").addEventListener("submit", async function (e) {
   e.preventDefault();
-  const form = e.target;
-  const avisoTexto = form.aviso.value.trim();
+  const aviso = document.getElementById("avisoTexto").value.trim();
+  const dataAviso = document.getElementById("dataAviso").value;
 
-  if (!avisoTexto) {
-    alert("Digite um aviso antes de salvar.");
+  if (!aviso || !dataAviso) {
+    alert("Preencha o aviso e selecione a data.");
     return;
   }
 
   try {
-    const resAvisos = await fetch(API_AVISOS);
-    const avisos = await resAvisos.json();
+    // Busca avisos antigos e deleta todos para manter só o último
+    const res = await fetch(API_AVISOS);
+    const anteriores = await res.json();
 
-    for (const aviso of avisos) {
-      await fetch(`${API_AVISOS}&data&aviso=${encodeURIComponent(aviso.aviso)}`, {
+    for (const a of anteriores) {
+      await fetch(`${API_AVISOS}/data/aviso/${encodeURIComponent(a.aviso)}`, {
         method: "DELETE",
       });
     }
 
+    // Salva novo aviso com data
     await fetch(API_AVISOS, {
       method: "POST",
-      body: JSON.stringify({ data: [{ aviso: avisoTexto }] }),
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data: [{ aviso, data: dataAviso }] }),
     });
 
-    alert("Aviso salvo com sucesso!");
-    form.reset();
+    alert("Aviso salvo!");
+    e.target.reset();
     carregarAviso();
+    atualizarCalendario();
   } catch (error) {
     alert("Erro ao salvar aviso.");
     console.error(error);
@@ -79,14 +84,13 @@ document.getElementById("formAviso").addEventListener("submit", async function (
 
 async function carregarAviso() {
   try {
-    const res = await fetch("https://sheetdb.io/api/v1/w34uix9m94kl8?sheet=avisos");
-    const dados = await res.json();
-    const avisos = dados.filter(d => d.aviso);
-    if (avisos.length === 0) {
+    const res = await fetch(API_AVISOS);
+    const avisos = await res.json();
+    if (!avisos.length) {
       document.getElementById("avisoDisplayTexto").textContent = "Nenhum aviso cadastrado.";
       return;
     }
-    // Pega o último aviso cadastrado
+    // Último aviso cadastrado
     const ultimo = avisos[avisos.length - 1];
     document.getElementById("avisoDisplayTexto").textContent = ultimo.aviso;
   } catch (error) {
@@ -202,16 +206,31 @@ async function iniciarCalendario() {
 }
 
 async function gerarEventos() {
-  const res = await fetch(API_URL);
-  const dados = await res.json();
-  return dados
+  const resEscalas = await fetch(API_URL);
+  const escalas = await resEscalas.json();
+
+  const resAvisos = await fetch(API_AVISOS);
+  const avisos = await resAvisos.json();
+
+  const eventosEscalas = escalas
     .filter(e => e.data)
-    .map((escala) => ({
+    .map(e => ({
       title: "Escala",
-      start: escala.data,
+      start: e.data,
       backgroundColor: "#3a87ad",
       borderColor: "#3a87ad",
     }));
+
+  const eventosAvisos = avisos
+    .filter(a => a.data)
+    .map(a => ({
+      title: "📢 Aviso",
+      start: a.data,
+      backgroundColor: "#ffb74d",
+      borderColor: "#ff9800",
+    }));
+
+  return [...eventosEscalas, ...eventosAvisos];
 }
 
 function atualizarCalendario() {
