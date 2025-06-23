@@ -1,103 +1,70 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Escala de Louvor</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-    }
 
-    .fundo-desfocado {
-      background-image: url('https://raw.githubusercontent.com/Derffson/escalalouvor/main/fundo.jpg');
-      background-size: cover;
-      background-position: center;
-      min-height: 100vh;
-      width: 100%;
-      position: relative;
-      overflow: hidden;
-    }
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
-    .fundo-desfocado::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      backdrop-filter: blur(8px);
-      background-color: rgba(0, 0, 0, 0.4);
-      z-index: 1;
-    }
+  <!-- FullCalendar CSS & JS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
-    .conteudo {
-      position: relative;
-      z-index: 2;
-      color: white;
-      padding: 2rem;
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .logo {
-      max-width: 150px;
-      margin-bottom: 1rem;
-    }
-
-    form {
-      margin-top: 2rem;
-    }
-
-    input, select, button {
-      display: block;
-      width: 100%;
-      padding: 0.75rem;
-      margin-bottom: 1rem;
-      border-radius: 8px;
-      border: none;
-      font-size: 1rem;
-    }
-
-    button {
-      background-color: #4CAF50;
-      color: white;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
-  <div class="fundo-desfocado">
-    <div class="conteudo">
-      <img src="https://raw.githubusercontent.com/Derffson/escalalouvor/main/logo.png" alt="Logo" class="logo" />
-      <h1>Escala de Louvor</h1>
+  <div class="conteudo">
+    <button id="btnAdmin" onclick="ativarModoAdmin()">Modo Admin</button>
 
+    <div id="areaAdmin" style="display:none;">
       <form id="escalaForm">
-        <input type="date" name="dataEscala" required />
-        <input type="text" name="vocal" placeholder="Vocal" />
-        <input type="text" name="segundaVoz" placeholder="Segunda Voz" />
-        <input type="text" name="baterista" placeholder="Bateria" />
-        <input type="text" name="guitarrista" placeholder="Guitarra" />
-        <input type="text" name="baixista" placeholder="Baixo" />
-        <input type="text" name="tecladista" placeholder="Teclado" />
-        <input type="text" name="violonista" placeholder="Violão" />
-        <input type="text" name="paleta" placeholder="Paleta de cores" />
+        <label for="dataEscala">Data da Escala:</label>
+        <input type="date" id="dataEscala" name="dataEscala" required />
+
+        <label for="vocal">Vocal:</label>
+        <input type="text" id="vocal" name="vocal" />
+
+        <label for="segundaVoz">Segunda Voz:</label>
+        <input type="text" id="segundaVoz" name="segundaVoz" />
+
+        <label for="baterista">Baterista:</label>
+        <input type="text" id="baterista" name="baterista" />
+
+        <label for="guitarrista">Guitarrista:</label>
+        <input type="text" id="guitarrista" name="guitarrista" />
+
+        <label for="baixista">Baixista:</label>
+        <input type="text" id="baixista" name="baixista" />
+
+        <label for="tecladista">Tecladista:</label>
+        <input type="text" id="tecladista" name="tecladista" />
+
+        <label for="violonista">Violonista:</label>
+        <input type="text" id="violonista" name="violonista" />
+
+        <label for="paleta">Paleta de Cores:</label>
+        <input type="text" id="paleta" name="paleta" />
+
         <button type="submit">Salvar Escala</button>
       </form>
-
-      <div id="escalaSalva"></div>
-      <div id="calendario" style="margin-top: 2rem; background: white; color: black; padding: 1rem; border-radius: 8px;"></div>
     </div>
+
+    <h1>Escala de Louvor - Igreja Vida Na Palavra</h1>
+
+    <div class="busca">
+      <h2>Buscar Escala</h2>
+      <label for="dataBusca">Data:</label>
+      <input type="date" id="dataBusca" />
+      <button onclick="buscarEscala()">Buscar</button>
+    </div>
+
+    <div class="resultado" id="escalaSalva"></div>
+
+    <div id="calendario"></div>
   </div>
 
-  <script src="script.js?v=5"></script>
+  <script src="script.js?v=2"></script>
 </body>
 </html>
