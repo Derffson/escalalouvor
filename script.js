@@ -53,21 +53,16 @@ document.getElementById("formAviso").addEventListener("submit", async function (
   }
 
   try {
-    // Apaga todos os avisos antigos (caso queira manter apenas o último)
-    const resAvisos = await fetch(API_URL);
+    const resAvisos = await fetch(API_AVISOS);
     const avisos = await resAvisos.json();
 
-    // Deleta todos os avisos que existirem (apenas da aba "avisos")
     for (const aviso of avisos) {
-      if (aviso.aviso) {
-        await fetch(`${API_URL}/data/aviso/${encodeURIComponent(aviso.aviso)}`, {
-          method: "DELETE",
-        });
-      }
+      await fetch(`${API_AVISOS}&data&aviso=${encodeURIComponent(aviso.aviso)}`, {
+        method: "DELETE",
+      });
     }
 
-    // Adiciona o novo aviso
-    await fetch(API_URL, {
+    await fetch(API_AVISOS, {
       method: "POST",
       body: JSON.stringify({ data: [{ aviso: avisoTexto }] }),
       headers: { "Content-Type": "application/json" },
@@ -84,19 +79,20 @@ document.getElementById("formAviso").addEventListener("submit", async function (
 
 async function carregarAviso() {
   try {
-    const res = await fetch(API_URL);
+    const res = await fetch(API_AVISOS);
     const dados = await res.json();
     const avisos = dados.filter(d => d.aviso);
+
     if (avisos.length === 0) {
-      document.getElementById("avisoDisplayTexto").textContent = "Nenhum aviso cadastrado.";
+      document.getElementById("avisoTexto").textContent = "Nenhum aviso cadastrado.";
       return;
     }
-    // Pega o último aviso cadastrado
+
     const ultimo = avisos[avisos.length - 1];
-    document.getElementById("avisoDisplayTexto").textContent = ultimo.aviso;
+    document.getElementById("avisoTexto").textContent = ultimo.aviso;
   } catch (error) {
     console.error("Erro ao carregar aviso:", error);
-    document.getElementById("avisoDisplayTexto").textContent = "Erro ao carregar aviso.";
+    document.getElementById("avisoTexto").textContent = "Erro ao carregar aviso.";
   }
 }
 
@@ -210,7 +206,7 @@ async function gerarEventos() {
   const res = await fetch(API_URL);
   const dados = await res.json();
   return dados
-    .filter(e => e.data)  // somente registros que tenham data (escala)
+    .filter(e => e.data)
     .map((escala) => ({
       title: "Escala",
       start: escala.data,
