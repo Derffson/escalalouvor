@@ -1,4 +1,6 @@
 const API_URL = "https://sheetdb.io/api/v1/w34uix9m94kl8";
+const API_URL_AVISOS = "https://sheetdb.io/api/v1/w34uix9m94kl8/avisos"; // Ajuste para o endpoint correto para a aba avisos
+
 
 function getUserId() {
   let userId = localStorage.getItem("userId");
@@ -163,6 +165,60 @@ async function gerarEventos() {
     borderColor: "#3a87ad",
   }));
 }
+
+// Função para carregar avisos do SheetDB e mostrar
+async function carregarAvisos() {
+  const container = document.getElementById("avisos");
+  try {
+    const res = await fetch(API_URL_AVISOS);
+    const dados = await res.json();
+    if (dados.length === 0) {
+      container.innerHTML = "<p>Nenhum aviso disponível.</p>";
+      return;
+    }
+    let html = "<h2>Avisos Importantes</h2><ul>";
+    dados.forEach(aviso => {
+      html += `<li>${aviso.texto || aviso.aviso || aviso.mensagem}</li>`; // ajuste o nome do campo conforme sua planilha
+    });
+    html += "</ul>";
+    container.innerHTML = html;
+  } catch (error) {
+    console.error("Erro ao carregar avisos:", error);
+    container.innerHTML = "<p>Erro ao carregar avisos.</p>";
+  }
+}
+
+// Função para salvar um novo aviso
+async function salvarAviso() {
+  const texto = document.getElementById("novoAviso").value.trim();
+  if (!texto) {
+    alert("Digite um aviso para salvar.");
+    return;
+  }
+  try {
+    // Exemplo de POST para SheetDB, com a estrutura correta:
+    await fetch(API_URL_AVISOS, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data: [{ texto }] }) // ajuste "texto" conforme seu campo
+    });
+    alert("Aviso salvo com sucesso!");
+    document.getElementById("novoAviso").value = "";
+    carregarAvisos();
+  } catch (error) {
+    console.error("Erro ao salvar aviso:", error);
+    alert("Erro ao salvar aviso.");
+  }
+}
+
+// Adiciona evento no botão
+document.getElementById("btnSalvarAviso").addEventListener("click", salvarAviso);
+
+// Atualizar avisos ao carregar a página junto com o calendário
+document.addEventListener("DOMContentLoaded", () => {
+  iniciarCalendario();
+  carregarAvisos();
+});
 
 function atualizarCalendario() {
   if (!calendar) return;
