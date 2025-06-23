@@ -124,21 +124,21 @@ async function mostrarEscala(data) {
     const isAdmin = document.getElementById("areaAdmin").style.display === "block";
 
     container.innerHTML = `
-      <h2>Escala da Semana (${data})</h2>
-      <p><strong>Vocal:</strong> ${dados.vocal || ''}</p>
-      <p><strong>Segunda Voz:</strong> ${dados.segundaVoz || ''}</p>
-      <p><strong>Baterista:</strong> ${dados.baterista || ''}</p>
-      <p><strong>Guitarrista:</strong> ${dados.guitarrista || ''}</p>
-      <p><strong>Baixista:</strong> ${dados.baixista || ''}</p>
-      <p><strong>Tecladista:</strong> ${dados.tecladista || ''}</p>
-      <p><strong>Violonista:</strong> ${dados.violonista || ''}</p>
-      <p><strong>Paleta de Cores:</strong> ${dados.paleta || ''}</p>
+  <h2>Escala da Semana (${data})</h2>
+  <p>🎤 <strong>Vocal:</strong> ${dados.vocal || ''}</p>
+  <p>🎵 <strong>Segunda Voz:</strong> ${dados.segundaVoz || ''}</p>
+  <p>🥁 <strong>Baterista:</strong> ${dados.baterista || ''}</p>
+  <p>🎸 <strong>Guitarrista:</strong> ${dados.guitarrista || ''}</p>
+  <p>🎸 <strong>Baixista:</strong> ${dados.baixista || ''}</p>
+  <p>🎹 <strong>Tecladista:</strong> ${dados.tecladista || ''}</p>
+  <p>🎻 <strong>Violonista:</strong> ${dados.violonista || ''}</p>
+  <p>🎨 <strong>Paleta de Cores:</strong> ${dados.paleta || ''}</p>
 
-      ${isAdmin ? `
-        <button onclick="editarEscala('${data}')">Editar</button>
-        <button class="botao-secundario" onclick="excluirEscala('${data}')">Excluir</button>
-      ` : ''}
-    `;
+  ${isAdmin ? `
+    <button onclick="editarEscala('${data}')">Editar</button>
+    <button class="botao-secundario" onclick="excluirEscala('${data}')">Excluir</button>
+  ` : ''}
+`;
   } catch (error) {
     console.error("Erro ao buscar escala:", error);
     container.innerHTML = "<p>Erro ao carregar escala.</p>";
