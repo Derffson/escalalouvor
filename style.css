@@ -169,6 +169,11 @@ p, span, li {
   color: #1e2a38 !important; /* texto escuro para contraste */
   font-weight: bold;
 }
+  .fc-event.evento-aviso {
+  background-color: orange !important;
+  border-color: darkorange !important;
+  color: black !important;
+}
 
   body {
     padding: 1rem;
