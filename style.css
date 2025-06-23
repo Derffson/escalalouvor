@@ -153,9 +153,47 @@ p, span, li {
 
   form, .busca, .resultado, #areaAdmin, #calendario, #avisoArea {
     padding: 1rem;
-    width: 100%;
-    margin: 1rem auto;
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
     border-radius: 10px;
+  }
+
+  /* Centraliza a busca */
+  .busca {
+    text-align: center !important;
+  }
+
+  /* Inputs e botão dentro da busca */
+  .busca label {
+    display: block;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .busca input[type="date"],
+  .busca button {
+    width: 90% !important;
+    max-width: 300px;
+    margin: 0.25rem auto !important;
+    display: block !important;
+  }
+
+  /* Centraliza o aviso */
+  #avisoArea {
+    display: block !important; /* Remove o flex para evitar desalinhamento */
+    text-align: center !important;
+  }
+
+  #avisoArea::before {
+    display: inline-block !important;
+    margin: 0 0.5rem 0 0 !important;
+  }
+
+  #avisoDisplayTexto {
+    margin: 0 auto !important;
+    text-align: center !important;
   }
 
   button {
@@ -180,44 +218,5 @@ p, span, li {
   body {
     padding: 1rem;
     font-size: 0.95rem;
-  }
-
-  /* Centralizar busca */
-  .busca {
-    max-width: 100% !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    text-align: center !important;
-  }
-  .busca input[type="date"] {
-    margin-left: auto !important;
-    margin-right: auto !important;
-    display: block !important;
-    width: 90% !important;
-  }
-  .busca button {
-    width: 90% !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    display: block !important;
-  }
-
-  /* Centralizar aviso */
-  #avisoArea {
-    max-width: 100% !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    text-align: center !important;
-    display: block !important; /* remove flex para evitar desalinhamento */
-  }
-
-  #avisoArea::before {
-    display: inline-block !important;
-    margin: 0 0.5rem 0 0 !important;
-  }
-
-  #avisoDisplayTexto {
-    margin: 0 auto !important;
-    text-align: center !important;
   }
 }
