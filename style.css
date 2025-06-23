@@ -98,25 +98,8 @@ p, span, li {
   line-height: 1.6;
 }
 
-@media (max-width: 600px) {
-  h1, h2 {
-    font-size: 1.4rem;
-  }
-
-  form, .busca, .resultado, #areaAdmin, #calendario {
-    padding: 1rem;
-    width: 100%;
-    margin: 1rem auto;
-    border-radius: 10px;
-  }
-
-  button {
-    width: 100%;
-    padding: 0.7rem;
-    font-size: 1rem;
-    margin-top: 0.75rem;
-  }
-  #avisoArea {
+/* 🔔 Estilo do campo de aviso */
+#avisoArea {
   background-color: #2c3e50;
   border-left: 6px solid #f39c12;
   border-radius: 12px;
@@ -138,7 +121,7 @@ p, span, li {
 }
 
 #avisoArea h2 {
-  display: none; /* esconde título duplicado */
+  display: none;
 }
 
 #avisoDisplayTexto {
@@ -147,7 +130,26 @@ p, span, li {
   font-style: italic;
   line-height: 1.6;
 }
-  
+
+/* Responsivo */
+@media (max-width: 600px) {
+  h1, h2 {
+    font-size: 1.4rem;
+  }
+
+  form, .busca, .resultado, #areaAdmin, #calendario, #avisoArea {
+    padding: 1rem;
+    width: 100%;
+    margin: 1rem auto;
+    border-radius: 10px;
+  }
+
+  button {
+    width: 100%;
+    padding: 0.7rem;
+    font-size: 1rem;
+    margin-top: 0.75rem;
+  }
 
   .botao-secundario {
     margin-top: 0.5rem;
@@ -160,23 +162,6 @@ p, span, li {
     padding: 0.5rem;
     font-size: 0.95rem;
   }
-  .fc-event {
-  color: white !important;
-  font-weight: 600;
-}
-
-/* Estilo específico para eventos de aviso (classe evento-aviso) */
-.fc-event.evento-aviso {
-  background-color: #FFA500 !important; /* laranja puro */
-  border-color: #FF8C00 !important; /* laranja escuro */
-  color: #1e2a38 !important; /* texto escuro para contraste */
-  font-weight: bold;
-}
-  .fc-event.evento-aviso {
-  background-color: orange !important;
-  border-color: darkorange !important;
-  color: black !important;
-}
 
   body {
     padding: 1rem;
