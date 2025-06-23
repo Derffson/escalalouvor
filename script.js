@@ -79,20 +79,19 @@ document.getElementById("formAviso").addEventListener("submit", async function (
 
 async function carregarAviso() {
   try {
-    const res = await fetch(API_AVISOS);
+    const res = await fetch("https://sheetdb.io/api/v1/w34uix9m94kl8?sheet=avisos");
     const dados = await res.json();
     const avisos = dados.filter(d => d.aviso);
-
     if (avisos.length === 0) {
-      document.getElementById("avisoTexto").textContent = "Nenhum aviso cadastrado.";
+      document.getElementById("avisoDisplayTexto").textContent = "Nenhum aviso cadastrado.";
       return;
     }
-
+    // Pega o último aviso cadastrado
     const ultimo = avisos[avisos.length - 1];
-    document.getElementById("avisoTexto").textContent = ultimo.aviso;
+    document.getElementById("avisoDisplayTexto").textContent = ultimo.aviso;
   } catch (error) {
     console.error("Erro ao carregar aviso:", error);
-    document.getElementById("avisoTexto").textContent = "Erro ao carregar aviso.";
+    document.getElementById("avisoDisplayTexto").textContent = "Erro ao carregar aviso.";
   }
 }
 
