@@ -208,4 +208,10 @@ p, span, li {
   #avisoDisplayTexto {
     font-size: 1rem;
   }
+.logo-igreja {
+  display: block;
+  margin: 0 auto 1rem;
+  max-width: 140px;
+  height: auto;
+}
 }
