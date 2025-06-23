@@ -147,30 +147,15 @@ p, span, li {
 
 /* Responsivo */
 @media (max-width: 600px) {
-  .conteudo {
-    padding-left: 1rem;
-    padding-right: 1rem;
+  h1, h2 {
+    font-size: 1.4rem;
   }
 
   form, .busca, .resultado, #areaAdmin, #calendario, #avisoArea {
+    padding: 1rem;
     width: 100%;
-    max-width: none;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 1rem 1rem;
+    margin: 1rem auto;
     border-radius: 10px;
-  }
-
-  .busca, #avisoArea {
-    text-align: center;
-  }
-
-  input[type="text"],
-  input[type="date"],
-  select {
-    display: block;
-    margin: 0 auto 0.75rem auto;
-    width: 95%;
   }
 
   button {
@@ -184,9 +169,55 @@ p, span, li {
     margin-top: 0.5rem;
     margin-left: 0;
   }
-  
+
+  input[type="text"],
+  input[type="date"],
+  select {
+    padding: 0.5rem;
+    font-size: 0.95rem;
+  }
+
   body {
     padding: 1rem;
     font-size: 0.95rem;
+  }
+
+  /* Centralizar busca */
+  .busca {
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+  }
+  .busca input[type="date"] {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: block !important;
+    width: 90% !important;
+  }
+  .busca button {
+    width: 90% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: block !important;
+  }
+
+  /* Centralizar aviso */
+  #avisoArea {
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+    display: block !important; /* remove flex para evitar desalinhamento */
+  }
+
+  #avisoArea::before {
+    display: inline-block !important;
+    margin: 0 0.5rem 0 0 !important;
+  }
+
+  #avisoDisplayTexto {
+    margin: 0 auto !important;
+    text-align: center !important;
   }
 }
