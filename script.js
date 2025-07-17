@@ -243,19 +243,9 @@ function atualizarCalendario() {
   });
 }
 
-async function ativarModoAdmin() {
-  const hashCorreto = "e0e1edc4739aabde3263835051911f878bd75006b23891f4717fa25c5150109b"; // hash da senha "louvor2024"
+function ativarModoAdmin() {
   const senha = prompt("Digite a senha de administrador:");
-
-  if (!senha) return;
-
-  const encoder = new TextEncoder();
-  const dados = encoder.encode(senha);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", dados);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-  if (hashHex === hashCorreto) {
+  if (senha === "louvor2024") {
     document.getElementById("areaAdmin").style.display = "block";
     document.getElementById("btnAdmin").style.display = "none";
     atualizarCalendario();
