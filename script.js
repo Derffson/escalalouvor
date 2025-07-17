@@ -4,6 +4,27 @@ const API_AVISOS = "https://sheetdb.io/api/v1/w34uix9m94kl8?sheet=avisos";
 document.getElementById("escalaForm").addEventListener("submit", async function (e) {
   e.preventDefault();
   const form = e.target;
+  const hashCorreto = "e0e1edc4739aabde3263835051911f878bd75006b23891f4717fa25c5150109b";
+
+  const senha = prompt("Digite a senha de administrador:");
+
+  async function gerarHash(texto) {
+    const encoder = new TextEncoder();
+    const dados = encoder.encode(texto);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", dados);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+  }
+
+  gerarHash(senha).then(hashDigitada => {
+    if (hashDigitada === hashCorreto) {
+      document.getElementById("areaAdmin").style.display = "block";
+    } else {
+      alert("Senha incorreta!");
+    }
+  });
+</script>
 
   const novaEscala = {
     data: form.dataEscala.value,
