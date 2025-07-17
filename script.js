@@ -224,7 +224,7 @@ async function gerarEventos() {
   const eventosAvisos = avisos
   .filter(a => a.data)
   .map(a => ({
-    title: "📢 Aviso",
+    title: "Aviso",
     start: a.data,
     backgroundColor: "#FFA500",
     borderColor: "#FF8C00",
